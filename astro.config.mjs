@@ -10,7 +10,12 @@ export default defineConfig({
   },
   vite: {
     preview: {
-      allowedHosts: true,
+      allowedHosts: ['.trycloudflare.com', 'localhost', '127.0.0.1', '.localhost'],
+      host: '0.0.0.0',
+    },
+    server: {
+      allowedHosts: ['.trycloudflare.com', 'localhost', '127.0.0.1', '.localhost'],
+      host: '0.0.0.0',
     },
   },
 });
