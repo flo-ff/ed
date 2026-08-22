@@ -176,14 +176,14 @@ header .nav {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.22;
-  filter: grayscale(1) contrast(1.12);
+  opacity: 0.34;
+  filter: grayscale(1) contrast(1.08);
   pointer-events: none;
 }
 .paper-bg-wash {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(250,249,247,0.58) 0%, rgba(250,249,247,0.88) 100%);
+  background: linear-gradient(to bottom, rgba(250,249,247,0.42) 0%, rgba(250,249,247,0.78) 100%);
   pointer-events: none;
 }
 .paper-inner { position: relative; z-index: 1; }
