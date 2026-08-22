@@ -15,4 +15,4 @@ Die Nachbarin in der Tür. Der Hund in der Sonne. Abgeblätterte Flyer an der Wa
 
 Nicht nur Kickflips. Portrait und Ort, nebeneinander. Ein Grind und ein Blick. Ein Schatten, ein Lächeln, eine aufgeplatzte Fliese, die wie eine Karte aussieht. Wenn es auf Beton passiert, gehört es hierher.
 
-*Ed knipst — mal Film, mal digital.*
+*Ed knipst — oft analog, mal digital.*
