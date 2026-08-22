@@ -119,18 +119,15 @@ header .nav {
 .hero-kicker {
   display: inline-flex;
   align-items: center;
-  font-size: 0.74rem;
+  font-size: 0.71rem;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #ffffff;
+  color: rgba(255,255,255,0.92);
   margin-bottom: 12px;
-  background: rgba(0,0,0,0.38);
-  border: 1px solid rgba(255,255,255,0.18);
-  border-left: 3px solid #ffe600;
-  padding: 6px 10px 6px 12px;
-  backdrop-filter: blur(8px);
-  text-shadow: 0 1px 8px rgba(0,0,0,0.32);
+  border-left: 2.5px solid rgba(255,230,0,0.92);
+  padding-left: 10px;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.38);
 }
 .hero-title {
   font-family: system-ui, -apple-system, sans-serif;
