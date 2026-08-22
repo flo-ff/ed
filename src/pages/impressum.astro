@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+const entry = await getEntry('pages', 'impressum');
+if (!entry) throw new Error('Impressum page not found: src/content/pages/impressum.md');
+const { Content } = await entry.render();
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+  <div style="height:62px"></div>
+  <section class="paper-section" style="min-height: 70vh; padding-top: 36px; padding-bottom: 72px;">
+    <div class="container paper-inner">
+      <a href="/" style="display:inline-flex; align-items:center; gap:6px; font-family:'Space Mono',monospace; font-size:0.78rem; letter-spacing:0.06em; text-transform:uppercase; color:#666; border:1.5px solid #111; padding:6px 10px; background:white; border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; transform: rotate(-0.6deg); box-shadow: 2px 2px 0 #111;">← Back to home</a>
+
+      <div style="margin-top:20px; margin-bottom:28px;">
+        <p style="font-family:'Permanent Marker',cursive; color: var(--accent); font-size:1rem; transform: rotate(-0.8deg); display:inline-block;">— legal —</p>
+        <h1 style="font-family:'Anton',sans-serif; font-size:clamp(2rem, 6vw, 3.8rem); font-weight:400; letter-spacing:-0.03em; text-transform:uppercase; line-height:0.9; margin-top:6px; transform: rotate(-0.4deg);">{entry.data.title}</h1>
+        {entry.data.description && <p style="color:#666; margin-top:10px; font-family:'Space Mono',monospace; font-size:0.82rem; letter-spacing:0.04em;">{entry.data.description}</p>}
+      </div>
+
+      <div style="background:white; border:2.5px solid #111; border-radius:14px; padding:28px 24px; box-shadow:6px 6px 0 #111; max-width: 780px; transform: rotate(-0.2deg);">
+        <div class="prose" style="max-width: none;">
+          <Content />
+        </div>
+        <div style="margin-top:24px; height:2px; background: repeating-linear-gradient(90deg, #111 0 8px, transparent 8px 12px);"></div>
+        <p style="margin-top:14px; font-family:'Caveat',cursive; font-size:1.1rem; color:#ff2e1f; transform: rotate(-0.6deg);">→ Fragest? Schreib an hello@skategallery.com</p>
+      </div>
+    </div>
+  </section>
+</Layout>

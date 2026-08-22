@@ -12,7 +12,9 @@ site_url: /
 display_url: /
 logo_url: /favicon.svg
 
-publish_mode: editorial_workflow
+# publish_mode is 'simple' locally (decap-server fs). Use 'editorial_workflow' only with git backend in production.
+# Set MODE=git for local editorial workflow: `MODE=git npx decap-server`
+publish_mode: simple
 editor:
   preview: true
 
@@ -41,7 +43,32 @@ collections:
         fields:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Description", name: "description", widget: "string", required: false }
+          - { label: "Background Image (behind intro)", name: "image", widget: "image", required: false, hint: "Faint B&W city texture behind 'The City Is Not A Background' — keep subtle" }
           - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Impressum"
+        name: "impressum"
+        file: "src/content/pages/impressum.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "string", required: false }
+          - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "infocard"
+    label: "Info Card (homepage)"
+    files:
+      - label: "Film / Info Card"
+        name: "card"
+        file: "src/content/infocard/card.md"
+        fields:
+          - { label: "Label (small top)", name: "label", widget: "string", required: false, hint: "e.g. How I shoot — film + digital" }
+          - { label: "Title", name: "title", widget: "string", hint: "First line, e.g. I love" }
+          - { label: "Title Highlight (red)", name: "titleHighlight", widget: "string", required: false, hint: "Second word in red, e.g. film" }
+          - { label: "Main Text", name: "body", widget: "markdown", hint: "Supports bold, paragraphs" }
+          - { label: "Box 1 Title", name: "box1Title", widget: "string", required: false }
+          - { label: "Box 1 Text", name: "box1Text", widget: "text", required: false }
+          - { label: "Box 2 Title", name: "box2Title", widget: "string", required: false }
+          - { label: "Box 2 Text", name: "box2Text", widget: "text", required: false }
+          - { label: "Footer (handwritten)", name: "footer", widget: "string", required: false }
 
   - name: "galleries"
     label: "Galleries"

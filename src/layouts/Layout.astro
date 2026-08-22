@@ -8,6 +8,9 @@ const { title, description } = Astro.props;
 import { getEntry } from 'astro:content';
 const settings = await getEntry('settings', 'site');
 const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
+const words = siteTitle.split(' ');
+const first = words[0] ?? 'SKATE';
+const rest = words.slice(1).join(' ');
 ---
 <!doctype html>
 <html lang="en">
@@ -22,23 +25,31 @@ const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
   <body>
     <header>
       <div class="container nav">
-        <a href="/" class="logo">{siteTitle.split(' ')[0]} <span>{siteTitle.split(' ').slice(1).join(' ')}</span></a>
-        <nav style="display:flex; gap:18px; align-items:center">
-          <a href="/" style="font-size:0.9rem; color:#ccc">Galleries</a>
-          <a href="/admin/" class="btn" style="font-size:0.85rem; padding:8px 14px">Edit Site →</a>
+        <a href="/" class="logo" aria-label={siteTitle}>
+          <span class="logo-mark">{first}</span>
+          {rest && <span class="logo-rest">{rest} ✦</span>}
+        </a>
+        <nav class="nav-links">
+          <a href="/#galleries" class="underline-sketch">Galleries</a>
         </nav>
       </div>
     </header>
-    <main class="container">
+
+    <main>
       <slot />
     </main>
-    <footer class="container">
-      <span>© {new Date().getFullYear()} {siteTitle} — Built with Astro + Decap CMS</span>
-      <span>
-        {settings?.data.email && <a href={`mailto:${settings.data.email}`} style="margin-right:16px">{settings.data.email}</a>}
-        {settings?.data.instagram && <a href={settings.data.instagram} target="_blank">Instagram ↗</a>}
-      </span>
+
+    <footer>
+      <div class="container" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; width:100%">
+        <span>© {new Date().getFullYear()} {siteTitle} — <span style="font-family:'Permanent Marker',cursive; color: #ffe600;">photos by ed</span>
+        <span style="display:flex; gap:16px; align-items:center; flex-wrap:wrap">
+          {settings?.data.email && <a href={`mailto:${settings.data.email}`}>{settings.data.email}</a>}
+          {settings?.data.instagram && <a href={settings.data.instagram} target="_blank">Instagram ↗</a>}
+          <a href="/impressum/" style="text-decoration:underline; text-underline-offset:3px;">Impressum</a>
+        </span>
+      </div>
     </footer>
+
     <script is:inline>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
@@ -48,7 +59,6 @@ const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
             });
           }
         });
-        // Handle invite/recovery tokens on site root: ?invite_token= or ?recovery_token=
         if (window.location.hash.includes("invite_token") || window.location.hash.includes("recovery_token") || window.location.search.includes("invite_token")) {
           window.netlifyIdentity.open();
         }

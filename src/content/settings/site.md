@@ -1,9 +1,9 @@
 ---
-siteTitle: "SKATE GALLERY"
-siteDescription: "Skate images & stories from the street"
-instagram: "https://instagram.com/"
-email: "hello@skategallery.com"
-heroTitle: "SKATE IMAGES"
-heroText: "Street, park & concrete — curated skate photography. All images and text editable via /admin."
+siteTitle: "ED KNIPST"
+siteDescription: "Ed knipst — Street, Menschen & Momente"
+heroTitle: "ED KNIPST"
+heroText: "Edwin fotografiert. Street, Menschen, Zufälle — mal Film, mal digital. Zwischen Bordstein und Bar, Schatten und Sonne. Kein Studio, nur draußen."
 heroImage: "/uploads/hero-placeholder.jpg"
+instagram: "https://www.instagram.com/knips.ed/"
+email: "florianfiss@gmail.com"
 ---

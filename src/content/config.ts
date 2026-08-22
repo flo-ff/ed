@@ -5,6 +5,7 @@ const pages = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    image: z.string().optional(),
   }),
 });
 
@@ -39,4 +40,18 @@ const settings = defineCollection({
   }),
 });
 
-export const collections = { pages, galleries, settings };
+const infocard = defineCollection({
+  type: 'content',
+  schema: z.object({
+    label: z.string().optional(),
+    title: z.string(),
+    titleHighlight: z.string().optional(),
+    box1Title: z.string().optional(),
+    box1Text: z.string().optional(),
+    box2Title: z.string().optional(),
+    box2Text: z.string().optional(),
+    footer: z.string().optional(),
+  }),
+});
+
+export const collections = { pages, galleries, settings, infocard };
