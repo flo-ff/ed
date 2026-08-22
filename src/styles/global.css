@@ -71,7 +71,7 @@ header .nav {
   height: 100%;
   object-fit: cover;
   object-position: center 38%;
-  filter: grayscale(1) contrast(1.18) brightness(0.84);
+  filter: none;
   transition: opacity 900ms ease;
   will-change: opacity;
 }
