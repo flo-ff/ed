@@ -254,7 +254,8 @@ header .nav {
   position: relative;
   overflow: hidden;
   background: #eee;
-  transition: transform 400ms cubic-bezier(0.22,1,0.36,1);
+  isolation: isolate;
+  transition: transform 420ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms ease;
 }
 .card:nth-child(1) { grid-column: 1 / span 7; aspect-ratio: 16 / 10.5; }
 .card:nth-child(2) { grid-column: 8 / span 5; aspect-ratio: 4 / 5.2; margin-top: 32px; }
@@ -268,25 +269,32 @@ header .nav {
 @media (max-width: 640px) {
   .card { grid-column: span 12 !important; aspect-ratio: 4 / 3 !important; margin-top: 0 !important; }
 }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.14);
+  z-index: 2;
+}
 .card img {
   width: 100%; height: 100%;
   object-fit: cover;
-  filter: grayscale(0.08) contrast(1.02);
-  transition: transform 600ms cubic-bezier(0.22,1,0.36,1), filter 300ms;
+  filter: none;
+  transition: transform 700ms cubic-bezier(0.22,1,0.36,1);
+  will-change: transform;
 }
-.card:hover img { transform: scale(1.04); filter: grayscale(0); }
+.card:hover img { transform: scale(1.05); }
 .card-body {
   position: absolute;
   inset: auto 0 0 0;
-  padding: 14px 14px 12px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.62) 58%, rgba(0,0,0,0.78));
+  padding: 16px 14px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.32) 52%, transparent 100%);
   color: white;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 220ms ease, transform 220ms ease;
+  transform: translateY(8px);
+  transition: opacity 260ms ease, transform 260ms ease;
+  pointer-events: none;
 }
 .card:hover .card-body { opacity: 1; transform: translateY(0); }
 .card-body h3 {
