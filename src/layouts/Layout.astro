@@ -17,6 +17,7 @@ const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
     <title>{title} — {siteTitle}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
     <header>
@@ -38,5 +39,20 @@ const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
         {settings?.data.instagram && <a href={settings.data.instagram} target="_blank">Instagram ↗</a>}
       </span>
     </footer>
+    <script is:inline>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+        // Handle invite/recovery tokens on site root: ?invite_token= or ?recovery_token=
+        if (window.location.hash.includes("invite_token") || window.location.hash.includes("recovery_token") || window.location.search.includes("invite_token")) {
+          window.netlifyIdentity.open();
+        }
+      }
+    </script>
   </body>
 </html>
