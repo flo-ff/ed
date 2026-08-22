@@ -1,0 +1,42 @@
+---
+import '../styles/global.css';
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+import { getEntry } from 'astro:content';
+const settings = await getEntry('settings', 'site');
+const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} — {siteTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <a href="/" class="logo">{siteTitle.split(' ')[0]} <span>{siteTitle.split(' ').slice(1).join(' ')}</span></a>
+        <nav style="display:flex; gap:18px; align-items:center">
+          <a href="/" style="font-size:0.9rem; color:#ccc">Galleries</a>
+          <a href="/admin/" class="btn" style="font-size:0.85rem; padding:8px 14px">Edit Site →</a>
+        </nav>
+      </div>
+    </header>
+    <main class="container">
+      <slot />
+    </main>
+    <footer class="container">
+      <span>© {new Date().getFullYear()} {siteTitle} — Built with Astro + Decap CMS</span>
+      <span>
+        {settings?.data.email && <a href={`mailto:${settings.data.email}`} style="margin-right:16px">{settings.data.email}</a>}
+        {settings?.data.instagram && <a href={settings.data.instagram} target="_blank">Instagram ↗</a>}
+      </span>
+    </footer>
+  </body>
+</html>

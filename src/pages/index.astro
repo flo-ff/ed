@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+const settings = await getEntry('settings', 'site');
+const home = await getEntry('pages', 'home');
+const galleries = (await getCollection('galleries')).filter(g => !g.data.draft).sort((a,b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
+const { Content } = await home.render();
+---
+
+<Layout title={settings.data.siteTitle} description={settings.data.siteDescription}>
+  <section class="hero">
+    <p class="badge">{settings.data.siteDescription}</p>
+    <h1>{settings.data.heroTitle ?? home.data.title}</h1>
+    <p>{settings.data.heroText ?? home.data.description}</p>
+    <div style="margin-top:24px; display:flex; gap:12px">
+      <a href="#galleries" class="btn">View Galleries</a>
+      <a href="/admin/" style="padding:10px 18px; border:1px solid #333; border-radius:999px; font-weight:700">Edit in CMS →</a>
+    </div>
+  </section>
+
+  {settings.data.heroImage && (
+    <div style="margin-bottom:48px; border-radius:16px; overflow:hidden; border:1px solid #222">
+      <img src={settings.data.heroImage} alt="Hero" style="width:100%; max-height:520px; object-fit:cover; display:block" />
+    </div>
+  )}
+
+  <section class="prose" style="margin-bottom:48px">
+    <Content />
+  </section>
+
+  <section id="galleries">
+    <h2 style="font-size:1.75rem; margin-bottom:20px; letter-spacing:-0.03em">GALLERIES — {galleries.length}</h2>
+    <div class="grid">
+      {galleries.map((g) => (
+        <a href={`/galleries/${g.slug}/`} class="card">
+          <img src={g.data.cover ?? g.data.images[0]?.image ?? '/uploads/hero-placeholder.jpg'} alt={g.data.title} loading="lazy" />
+          <div class="card-body">
+            <h3>{g.data.title}</h3>
+            {g.data.description && <p>{g.data.description}</p>}
+            <p style="margin-top:8px; font-size:0.8rem; color:#666">{g.data.images.length} images {g.data.date ? `· ${g.data.date.toLocaleDateString()}` : ''}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+    {galleries.length === 0 && <p style="color:#888">No galleries yet. Create one at <a href="/admin/" style="text-decoration:underline">/admin</a>.</p>}
+  </section>
+</Layout>

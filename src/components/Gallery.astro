@@ -1,0 +1,54 @@
+---
+interface Props {
+  images: { image: string; caption?: string; alt?: string }[];
+}
+const { images } = Astro.props;
+---
+<div class="gallery-grid" id="gallery">
+  {images.map((img) => (
+    <figure data-src={img.image} data-caption={img.caption ?? ''}>
+      <img src={img.image} alt={img.alt ?? img.caption ?? ''} loading="lazy" />
+      {img.caption && <figcaption>{img.caption}</figcaption>}
+    </figure>
+  ))}
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button id="lb-close" aria-label="Close">×</button>
+  <img id="lb-img" src="" alt="" />
+  <p id="lb-caption" style="color:white; margin-top:12px; text-align:center"></p>
+</div>
+
+<script>
+  const grid = document.getElementById('gallery');
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+  const lbCaption = document.getElementById('lb-caption');
+  const closeBtn = document.getElementById('lb-close');
+
+  function open(src: string, caption: string) {
+    if (!lb || !lbImg || !lbCaption) return;
+    lbImg.src = src;
+    lbCaption.textContent = caption;
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    if (!lb) return;
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  grid?.addEventListener('click', (e) => {
+    const fig = (e.target as HTMLElement).closest('figure');
+    if (!fig) return;
+    const src = fig.getAttribute('data-src');
+    const caption = fig.getAttribute('data-caption') ?? '';
+    if (src) open(src, caption);
+  });
+  closeBtn?.addEventListener('click', close);
+  lb?.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+</script>
