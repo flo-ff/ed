@@ -30,7 +30,8 @@ collections:
           - { label: "Site Description", name: "siteDescription", widget: "string" }
           - { label: "Hero Title", name: "heroTitle", widget: "string", required: false, hint: "Big headline on homepage" }
           - { label: "Hero Text", name: "heroText", widget: "text", required: false }
-          - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
+          - { label: "Hero Image (fallback)", name: "heroImage", widget: "image", required: false, hint: "Fallback if Hero collection empty" }
+          - { label: "Paper Background Image", name: "paperBgImage", widget: "image", required: false, hint: "Faint image behind whole paper section — keep very subtle, covers behind galleries" }
           - { label: "Instagram URL", name: "instagram", widget: "string", required: false }
           - { label: "Contact Email", name: "email", widget: "string", required: false }
 

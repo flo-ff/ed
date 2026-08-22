@@ -47,6 +47,10 @@ const initialHero = allHeros[0] || fallbackHero;
   </script>
 
   <section class="paper-section">
+    {settings.data.paperBgImage && (
+      <img src={settings.data.paperBgImage} alt="" class="paper-bg" loading="lazy" aria-hidden="true" />
+    )}
+    <div class="paper-bg-wash" aria-hidden="true"></div>
     <div class="container paper-inner">
       <div class="intro-break">
         <div class="intro-card intro-minimal">

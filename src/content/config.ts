@@ -37,6 +37,7 @@ const settings = defineCollection({
     heroTitle: z.string().optional(),
     heroText: z.string().optional(),
     heroImage: z.string().optional(),
+    paperBgImage: z.string().optional(),
   }),
 });
 
