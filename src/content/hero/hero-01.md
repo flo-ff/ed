@@ -1,4 +1,4 @@
 ---
-image: /uploads/hero-placeholder.jpg
+image: /uploads/552215226_18023836601738170_6935734957407818295_n.jpg
 alt: hero image
 ---
