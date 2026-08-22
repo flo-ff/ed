@@ -19,13 +19,16 @@ const initialHero = allHeros[0] || fallbackHero;
   <section class="hero-bw" data-heros={JSON.stringify(allHeros)}>
     <img id="hero-a" src={initialHero} alt="Hero" class="hero-bw-img" loading="eager" style="opacity:1" />
     <img id="hero-b" src={initialHero} alt="" class="hero-bw-img" loading="eager" style="opacity:0" aria-hidden="true" />
+    <div class="hero-bg-type" aria-hidden="true">ED</div>
     <div class="container hero-content">
-      <div>
+      <div class="hero-copy">
         <p class="hero-kicker">{settings.data.siteDescription}</p>
-        <h1 class="hero-title">{settings.data.heroTitle ?? 'ED KNIPST'}</h1>
+        <h1 class="hero-title">{(settings.data.heroTitle ?? 'ED KNIPST').split(' ')[0]} <em>{(settings.data.heroTitle ?? 'ED KNIPST').split(' ').slice(1).join(' ')}</em></h1>
         <p class="hero-sub">{settings.data.heroText}</p>
       </div>
-      <div class="hero-meta">{galleries.length} galleries · {galleries.reduce((a,g)=>a+g.data.images.length,0)} images</div>
+      <div class="hero-side">
+        <div class="hero-meta">{galleries.length} galleries · {galleries.reduce((a,g)=>a+g.data.images.length,0)} images<br/><span style="text-transform:none; letter-spacing:0; color: rgba(255,255,255,0.42)">↑ scroll to explore</span></div>
+      </div>
     </div>
   </section>
   <script is:inline>
@@ -45,14 +48,20 @@ const initialHero = allHeros[0] || fallbackHero;
 
   <section class="paper-section">
     <div class="container paper-inner">
-      <div class="intro-minimal">
-        <h1>{home.data.title}</h1>
-        <div class="prose"><Content /></div>
+      <div class="intro-break">
+        <div class="intro-card intro-minimal">
+          <h1>{home.data.title}</h1>
+          <div class="prose"><Content /></div>
+        </div>
+        <div class="intro-side">
+          <div class="intro-index">01 — Intro<br/><span style="color: #0e0e0e">ED KNIPST</span><br/>Street, Menschen<br/>& Momente seit 2022</div>
+          <div style="font-size: 0.78rem; line-height: 1.5; color: #6b6b6b;">No fuss. Just images that stayed. → <a href="#galleries" style="color:#0e0e0e; border-bottom:1px solid #0e0e0e;">View index</a></div>
+        </div>
       </div>
 
       <div id="galleries" class="section-head">
-        <h2>Selected works</h2>
-        <span>{galleries.length} galleries</span>
+        <h2>Selected works — broken grid</h2>
+        <span>{galleries.length} galleries · full bleed where it wants to be</span>
       </div>
       <div class="grid" id="gallery-grid">
         {galleries.map(g => (
