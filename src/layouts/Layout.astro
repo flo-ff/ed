@@ -7,10 +7,7 @@ interface Props {
 const { title, description } = Astro.props;
 import { getEntry } from 'astro:content';
 const settings = await getEntry('settings', 'site');
-const siteTitle = settings?.data.siteTitle ?? 'SKATE GALLERY';
-const words = siteTitle.split(' ');
-const first = words[0] ?? 'SKATE';
-const rest = words.slice(1).join(' ');
+const siteTitle = settings?.data.siteTitle ?? 'ED KNIPST';
 ---
 <!doctype html>
 <html lang="en">
@@ -25,43 +22,30 @@ const rest = words.slice(1).join(' ');
   <body>
     <header>
       <div class="container nav">
-        <a href="/" class="logo" aria-label={siteTitle}>
-          <span class="logo-mark">{first}</span>
-          {rest && <span class="logo-rest">{rest} ✦</span>}
-        </a>
+        <a href="/" class="logo">{siteTitle}</a>
         <nav class="nav-links">
-          <a href="/#galleries" class="underline-sketch">Galleries</a>
+          <a href="/#galleries">Index</a>
+          <a href="/impressum/">Impressum</a>
         </nav>
       </div>
     </header>
-
     <main>
       <slot />
     </main>
-
-    <footer>
-      <div class="container" style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; width:100%">
-        <span>© {new Date().getFullYear()} {siteTitle} — <span style="font-family:'Permanent Marker',cursive; color: #ffe600;">photos by ed</span>
-        <span style="display:flex; gap:16px; align-items:center; flex-wrap:wrap">
-          {settings?.data.email && <a href={`mailto:${settings.data.email}`}>{settings.data.email}</a>}
-          {settings?.data.instagram && <a href={settings.data.instagram} target="_blank">Instagram ↗</a>}
-          <a href="/impressum/" style="text-decoration:underline; text-underline-offset:3px;">Impressum</a>
-        </span>
-      </div>
+    <footer class="container">
+      <span>© {new Date().getFullYear()} {siteTitle}</span>
+      <span style="display:flex; gap:16px">
+        {settings?.data.email && <a href={`mailto:${settings.data.email}`}>{settings.data.email}</a>}
+        {settings?.data.instagram && <a href={settings.data.instagram} target="_blank">Instagram</a>}
+        <a href="/impressum/">Impressum</a>
+      </span>
     </footer>
-
     <script is:inline>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
+          if (!user) window.netlifyIdentity.on("login", () => { document.location.href = "/admin/"; });
         });
-        if (window.location.hash.includes("invite_token") || window.location.hash.includes("recovery_token") || window.location.search.includes("invite_token")) {
-          window.netlifyIdentity.open();
-        }
+        if (window.location.hash.includes("invite_token") || window.location.hash.includes("recovery_token") || window.location.search.includes("invite_token")) window.netlifyIdentity.open();
       }
     </script>
   </body>

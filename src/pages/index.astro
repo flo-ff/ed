@@ -4,8 +4,6 @@ import { getCollection, getEntry } from 'astro:content';
 
 const settings = await getEntry('settings', 'site');
 const home = await getEntry('pages', 'home');
-const cardEntry = await getEntry('infocard', 'card');
-const cardContent = cardEntry ? await cardEntry.render() : null;
 const galleries = (await getCollection('galleries')).filter(g => !g.data.draft).sort((a,b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
 const { Content } = await home.render();
 
@@ -14,194 +12,59 @@ const heroImages = heroEntries.map(e => e.data.image).filter(Boolean);
 const fallbackHero = settings.data.heroImage || '/uploads/hero-placeholder.jpg';
 const allHeros = heroImages.length ? heroImages : [fallbackHero];
 const initialHero = allHeros[0] || fallbackHero;
-const heroTitle = settings.data.heroTitle ?? home.data.title ?? 'SKATE IMAGES';
-const heroWords = heroTitle.split(' ');
-const firstLine = heroWords.slice(0, Math.ceil(heroWords.length/2)).join(' ');
-const secondLine = heroWords.slice(Math.ceil(heroWords.length/2)).join(' ');
 ---
 
 <Layout title={settings.data.siteTitle} description={settings.data.siteDescription}>
 
-  <!-- BIG B&W HERO — random from Hero collection, crossfade without black -->
   <section class="hero-bw" data-heros={JSON.stringify(allHeros)}>
-    <img id="hero-a" src={initialHero} alt="Hero background — black and white" class="hero-bw-img" loading="eager" style="opacity:1" />
+    <img id="hero-a" src={initialHero} alt="Hero" class="hero-bw-img" loading="eager" style="opacity:1" />
     <img id="hero-b" src={initialHero} alt="" class="hero-bw-img" loading="eager" style="opacity:0" aria-hidden="true" />
-    <div class="hero-grid" aria-hidden="true"></div>
-    <div class="hero-grain" aria-hidden="true"></div>
-
-    <!-- sketch annotations floating -->
-    <div class="annotation ann-1" aria-hidden="true">
-      <span style="border: 1.5px solid #ffe600; padding: 2px 8px; border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; background: rgba(0,0,0,0.35); backdrop-filter: blur(4px);">no filter — just film →</span>
-    </div>
-    <div class="annotation ann-2" aria-hidden="true">◎ 35mm • TRIX400 • push+1</div>
-
     <div class="container hero-content">
-      <p class="hero-kicker">{settings.data.siteDescription} <span>— Est. 2026 • Street / Park / Concrete</span></p>
-
-      <h1 class="hero-title">
-        <span class="outline">{firstLine || 'SKATE'}</span>
-        <span class="fill scribble">{secondLine || 'IMAGES'}</span>
-      </h1>
-
-      <p class="hero-sub">
-        {settings.data.heroText ?? home.data.description ?? 'Street, park & concrete — curated skate photography. Raw, grainy, and a little crooked — like a zine you found on the curb.'}
-      </p>
-
-      <div class="hero-actions">
-        <a href="#galleries" class="btn">View Galleries ↓</a>
+      <div>
+        <p class="hero-kicker">{settings.data.siteDescription}</p>
+        <h1 class="hero-title">{settings.data.heroTitle ?? 'ED KNIPST'}</h1>
+        <p class="hero-sub">{settings.data.heroText}</p>
       </div>
-
-      <div class="hero-meta">
-        <span><strong>{galleries.length} galleries</strong> • {galleries.reduce((a,g)=>a+g.data.images.length,0)} photos</span>
-      </div>
-    </div>
-
-    <!-- bottom fade hint -->
-    <div style="position:absolute; bottom:18px; left:50%; transform: translateX(-50%); z-index:4; display:flex; flex-direction:column; align-items:center; gap:6px; opacity:0.9">
-      <span style="font-family:'Space Mono',monospace; font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase; color:#bbb">Scroll</span>
-      <span style="width:1px; height:28px; background: linear-gradient(white, transparent); display:block"></span>
+      <div class="hero-meta">{galleries.length} galleries · {galleries.reduce((a,g)=>a+g.data.images.length,0)} images</div>
     </div>
   </section>
   <script is:inline>
     (() => {
-      const section = document.querySelector('.hero-bw');
-      const a = document.getElementById('hero-a');
-      const b = document.getElementById('hero-b');
-      if (!section || !a || !b) return;
-      try {
-        const heros = JSON.parse(section.dataset.heros || '[]');
-        if (heros.length <= 1) return;
-        const pickOne = (exclude) => {
-          if (heros.length === 1) return heros[0];
-          let p; do { p = heros[Math.floor(Math.random()*heros.length)]; } while (p === exclude);
-          return p;
-        };
-        let active = a, inactive = b;
-        let cur = active.getAttribute('src');
-        inactive.src = cur;
-        const crossfadeTo = (next) => {
-          if (!next || next === cur) return;
-          const tmp = new Image(); tmp.src = next;
-          const doFade = () => {
-            inactive.src = next;
-            void inactive.offsetWidth;
-            inactive.style.opacity = '1';
-            active.style.opacity = '0';
-            setTimeout(() => { const t = active; active = inactive; inactive = t; cur = next; inactive.style.opacity = '0'; }, 950);
-          };
-          if (tmp.complete) doFade(); else tmp.onload = doFade;
-        };
-        setTimeout(() => { const first = pickOne(cur); if (first !== cur) crossfadeTo(first); }, 800);
-        setInterval(() => { const next = pickOne(cur); crossfadeTo(next); }, 15000);
-      } catch(e) {}
+      const s=document.querySelector('.hero-bw'),a=document.getElementById('hero-a'),b=document.getElementById('hero-b');
+      if(!s||!a||!b) return;
+      try{
+        const heros=JSON.parse(s.dataset.heros||'[]'); if(heros.length<=1) return;
+        const pick=(ex)=>{let p; do{p=heros[Math.floor(Math.random()*heros.length)]}while(p===ex); return p;};
+        let active=a,inactive=b,cur=active.getAttribute('src'); inactive.src=cur;
+        const xfade=(next)=>{ if(!next||next===cur) return; const t=new Image(); t.src=next; const go=()=>{ inactive.src=next; void inactive.offsetWidth; inactive.style.opacity='1'; active.style.opacity='0'; setTimeout(()=>{ const tmp=active; active=inactive; inactive=tmp; cur=next; inactive.style.opacity='0'; },950); }; if(t.complete) go(); else t.onload=go; };
+        setTimeout(()=>{ const f=pick(cur); if(f!==cur) xfade(f); },800);
+        setInterval(()=> xfade(pick(cur)),15000);
+      }catch(e){}
     })();
   </script>
 
-
-  <div class="torn" aria-hidden="true"></div>
-
-  <!-- PAPER CONTENT -->
   <section class="paper-section">
     <div class="container paper-inner">
-      <!-- intro prose - on paper with background image -->
-      <div class="city-intro-wrap">
-        {home.data.image && (
-          <img src={home.data.image} alt="" class="city-bg-img" loading="lazy" aria-hidden="true" />
-        )}
-        <div class="city-bg-wash" aria-hidden="true"></div>
-        <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items:start; position:relative; z-index:1;">
-        <div class="prose">
-          <p style="font-family:'Permanent Marker',cursive; color: var(--accent); font-size:1.15rem; transform: rotate(-1deg); display:inline-block; margin-bottom:8px;">— hey, read this —</p>
-          <Content />
-          <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap">
-            <span class="badge">✦ photocopy zine</span>
-            <span class="badge" style="background:#111">✦ hand-made</span>
-            <span class="badge" style="background:#ffe600; color:#111">✦ 100% skate</span>
-          </div>
-        </div>
-        <!-- visitor card - editable via /admin → Info Card -->
-        {cardEntry && cardContent ? (
-        <div style="background:white; border:2.5px solid #111; border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; padding:20px 20px 16px; box-shadow:6px 6px 0 #111; transform: rotate(0.7deg);">
-          {cardEntry.data.label && <p style="font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:#888; margin-bottom:8px;">{cardEntry.data.label}</p>}
-          <p style="font-family:'Permanent Marker',cursive; font-size:1.35rem; line-height:0.95; margin-bottom:10px; transform: rotate(-0.6deg);">{cardEntry.data.title}{cardEntry.data.titleHighlight ? <><br/><span style="color:#ff2e1f;">{cardEntry.data.titleHighlight}</span> →</> : ' →'}</p>
-          <div style="font-size:0.92rem; color:#2b2b2b; line-height:1.6;" class="prose" >
-            <cardContent.Content />
-          </div>
-          {(cardEntry.data.box1Title || cardEntry.data.box2Title) && (
-          <div style="margin-top:12px; display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-            {cardEntry.data.box1Title && (
-            <div style="background:#f4f0e6; border:1.5px solid #111; padding:10px 10px 8px; transform: rotate(-0.7deg);">
-              <p style="font-family:'Space Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:#888; margin-bottom:4px;">{cardEntry.data.box1Title}</p>
-              {cardEntry.data.box1Text && <p style="font-size:0.82rem; line-height:1.5; color:#222;">{cardEntry.data.box1Text}</p>}
-            </div>
-            )}
-            {cardEntry.data.box2Title && (
-            <div style="background:#111; color:#f4f0e6; border:1.5px solid #111; padding:10px 10px 8px; transform: rotate(0.8deg);">
-              <p style="font-family:'Space Mono',monospace; font-size:0.62rem; letter-spacing:0.1em; text-transform:uppercase; color:#aaa; margin-bottom:4px;">{cardEntry.data.box2Title}</p>
-              {cardEntry.data.box2Text && <p style="font-size:0.82rem; line-height:1.5; color:#ddd;">{cardEntry.data.box2Text}</p>}
-            </div>
-            )}
-          </div>
-          )}
-          {cardEntry.data.footer && (
-          <>
-          <div style="margin-top:14px; height:2px; background: repeating-linear-gradient(90deg, #111 0 8px, transparent 8px 12px);"></div>
-          <p style="margin-top:10px; font-family:'Caveat',cursive; font-size:1.15rem; color:#ff2e1f; transform: rotate(-1deg);">↳ {cardEntry.data.footer}</p>
-          </>
-          )}
-        </div>
-        ) : (
-        <div style="background:white; border:2.5px solid #111; border-radius:255px 15px 225px 15px / 15px 225px 15px 255px; padding:20px 20px 16px; box-shadow:6px 6px 0 #111; transform: rotate(0.7deg);">
-          <p style="font-family:'Space Mono',monospace; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:#888; margin-bottom:8px;">How I shoot — film + digital</p>
-          <p style="font-family:'Permanent Marker',cursive; font-size:1.35rem; line-height:0.95; margin-bottom:10px; transform: rotate(-0.6deg);">I love<br/><span style="color:#ff2e1f;">film</span> →</p>
-          <p style="font-size:0.92rem; color:#2b2b2b; line-height:1.6;">Film vs digital — edit this in /admin → Info Card</p>
-        </div>
-        )}
-        </div>
+      <div class="intro-minimal">
+        <h1>{home.data.title}</h1>
+        <div class="prose"><Content /></div>
       </div>
 
-      <style>
-        @media (max-width: 900px) {
-          div[style*="grid-template-columns: 1.1fr"] { grid-template-columns: 1fr !important; }
-        }
-      </style>
-
-      <!-- GALLERIES -->
-      <section id="galleries">
-        <div class="section-head">
-          <h2>Galleries — <span>{galleries.length}</span></h2>
-          <span class="section-count">{galleries.length} drops</span>
-        </div>
-
-        <div class="grid">
-          {galleries.map((g) => (
-            <a href={`/galleries/${g.slug}/`} class="card">
-              <img src={g.data.cover ?? g.data.images[0]?.image ?? '/uploads/hero-placeholder.jpg'} alt={g.data.title} loading="lazy" />
-              <div class="card-body">
-                <h3>{g.data.title}</h3>
-                {g.data.description && <p>{g.data.description}</p>}
-                <div class="card-meta">
-                  <span class="pill">{g.data.images.length} imgs</span>
-                  <span>{g.data.date ? g.data.date.toLocaleDateString() : 'no date'}</span>
-                  <span style="margin-left:auto; color:#111; font-weight:700">↗ view</span>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        {galleries.length === 0 && (
-          <div style="background:white; border:2.5px dashed #111; padding:24px; text-align:center; margin-top:20px; transform: rotate(-0.3deg);">
-            <p style="color:#555">No galleries yet. Create one at <a href="/admin/" style="text-decoration:underline; font-weight:700">/admin</a>.</p>
-          </div>
-        )}
-
-        <div style="margin-top:28px; display:flex; align-items:center; gap:12px; font-family:'Caveat',cursive; font-size:1.2rem; color:#111; transform: rotate(-0.6deg);">
-          <span style="width:44px; height:2px; background:#111; display:inline-block"></span>
-          more concrete soon...
-          <span style="color: var(--accent)">✦</span>
-        </div>
-      </section>
+      <div id="galleries" class="section-head">
+        <h2>Selected works</h2>
+        <span>{galleries.length} galleries</span>
+      </div>
+      <div class="grid" id="gallery-grid">
+        {galleries.map(g => (
+          <a href={`/galleries/${g.slug}/`} class="card">
+            <img src={g.data.cover ?? g.data.images[0]?.image ?? '/uploads/hero-placeholder.jpg'} alt={g.data.title} loading="lazy" />
+            <div class="card-body">
+              <h3>{g.data.title}</h3>
+              <div class="card-meta"><span>{g.data.images.length} images</span>{g.data.date ? ` · ${g.data.date.toLocaleDateString()}` : ''}</div>
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 </Layout>
