@@ -10,7 +10,7 @@ FROM base AS builder-main
 WORKDIR /app
 COPY . .
 RUN git fetch origin || true
-RUN git checkout origin/main
+RUN git checkout -f origin/main
 RUN npm ci
 RUN npm run build
 RUN mv dist /dist-main
@@ -19,7 +19,7 @@ FROM base AS builder-clean
 WORKDIR /app
 COPY . .
 RUN git fetch origin || true
-RUN git checkout origin/explore/clean-modern
+RUN git checkout -f origin/explore/clean-modern
 RUN npm ci
 RUN npm run build
 RUN mv dist /dist-clean
@@ -28,5 +28,5 @@ FROM nginx:alpine
 COPY --from=builder-main /dist-main /usr/share/nginx/main
 COPY --from=builder-clean /dist-clean /usr/share/nginx/clean
 COPY nginx.preview.conf /etc/nginx/nginx.conf
-EXPOSE 8080 8081
+EXPOSE 8082 8083
 CMD ["nginx", "-g", "daemon off;"]

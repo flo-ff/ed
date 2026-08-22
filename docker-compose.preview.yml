@@ -4,6 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080" # sketchy — origin/main
-      - "8081:8081" # clean  — explore/clean-modern
+      - "8082:8082" # sketchy — origin/main
+      - "8083:8083" # clean  — explore/clean-modern
     restart: unless-stopped
