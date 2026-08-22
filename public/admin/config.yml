@@ -1,12 +1,9 @@
 backend:
   name: github
-  repo: YOUR_GITHUB_USERNAME/skate-gallery  # <-- CHANGE THIS to your repo
+  repo: flo-ff/ed
   branch: main
-  # For Netlify: use git-gateway instead (see README)
-  # name: git-gateway
-  # branch: main
 
-# For Netlify Identity (git-gateway) uncomment above and remove github block
+# For Netlify Identity (git-gateway) — uncomment to use invited emails instead of GitHub logins:
 # backend:
 #   name: git-gateway
 #   branch: main
@@ -14,9 +11,12 @@ backend:
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
-site_url: https://YOUR_SITE.netlify.app
-display_url: https://YOUR_SITE.netlify.app
-logo_url: https://YOUR_SITE.netlify.app/favicon.svg
+# local_backend allows editing without GitHub OAuth when running `npx decap-server`
+local_backend: true
+
+site_url: https://flo-ff.github.io/ed
+display_url: https://flo-ff.github.io/ed
+logo_url: https://flo-ff.github.io/ed/favicon.svg
 
 publish_mode: editorial_workflow
 editor:
