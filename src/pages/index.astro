@@ -84,7 +84,7 @@ const initialHero = allHeros[0] || fallbackHero;
       const bg = document.getElementById('paper-bg');
       if (!bg) return;
       const onScroll = () => {
-        const y = (window.scrollY || document.documentElement.scrollTop) * -0.14;
+        const y = (window.scrollY || document.documentElement.scrollTop) * -0.22;
         bg.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
       };
       window.addEventListener('scroll', onScroll, { passive: true });
