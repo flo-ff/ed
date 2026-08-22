@@ -1,12 +1,6 @@
 backend:
-  name: github
-  repo: flo-ff/ed
+  name: git-gateway
   branch: main
-
-# For Netlify Identity (git-gateway) — uncomment to use invited emails instead of GitHub logins:
-# backend:
-#   name: git-gateway
-#   branch: main
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
