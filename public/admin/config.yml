@@ -14,9 +14,9 @@ public_folder: "/uploads"
 # local_backend allows editing without GitHub OAuth when running `npx decap-server`
 local_backend: true
 
-site_url: https://flo-ff.github.io/ed
-display_url: https://flo-ff.github.io/ed
-logo_url: https://flo-ff.github.io/ed/favicon.svg
+site_url: /
+display_url: /
+logo_url: /favicon.svg
 
 publish_mode: editorial_workflow
 editor:
