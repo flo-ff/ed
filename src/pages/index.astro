@@ -39,8 +39,8 @@ const initialHero = allHeros[0] || fallbackHero;
         const heros=JSON.parse(s.dataset.heros||'[]'); if(heros.length<=1) return;
         const pick=(ex)=>{let p; do{p=heros[Math.floor(Math.random()*heros.length)]}while(p===ex); return p;};
         let active=a,inactive=b,cur=active.getAttribute('src'); inactive.src=cur;
-        const xfade=(next)=>{ if(!next||next===cur) return; const t=new Image(); t.src=next; const go=()=>{ inactive.src=next; void inactive.offsetWidth; inactive.style.opacity='1'; active.style.opacity='0'; setTimeout(()=>{ const tmp=active; active=inactive; inactive=tmp; cur=next; inactive.style.opacity='0'; },950); }; if(t.complete) go(); else t.onload=go; };
-        setTimeout(()=>{ const f=pick(cur); if(f!==cur) xfade(f); },800);
+        const xfade=(next)=>{ if(!next||next===cur) return; const t=new Image(); t.src=next; const go=()=>{ inactive.src=next; void inactive.offsetWidth; inactive.style.opacity='1'; active.style.opacity='0'; setTimeout(()=>{ const tmp=active; active=inactive; inactive=tmp; cur=next; inactive.style.opacity='0'; },1050); }; if(t.complete) go(); else t.onload=go; };
+        setTimeout(()=>{ const f=pick(cur); if(f!==cur) xfade(f); },1400);
         setInterval(()=> xfade(pick(cur)),15000);
       }catch(e){}
     })();
