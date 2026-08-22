@@ -45,10 +45,31 @@ const initialHero = allHeros[0] || fallbackHero;
       }catch(e){}
     })();
   </script>
+  <script is:inline>
+    // parallax for paper-section bg — subtle, no black gap
+    (() => {
+      const bg = document.getElementById('paper-bg');
+      const sec = document.getElementById('paper-section');
+      if (!bg || !sec) return;
+      const onScroll = () => {
+        const rect = sec.getBoundingClientRect();
+        const vh = window.innerHeight;
+        if (rect.bottom < 0 || rect.top > vh) return;
+        const progress = (vh - rect.top) / (vh + rect.height);
+        const y = (progress - 0.5) * 40; // 40px range
+        bg.style.transform = `translateY(${y.toFixed(1)}px)`;
+      };
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) { requestAnimationFrame(() => { onScroll(); ticking = false; }); ticking = true; }
+      }, { passive: true });
+      onScroll();
+    })();
+  </script>
 
-  <section class="paper-section">
+  <section class="paper-section" id="paper-section">
     {settings.data.paperBgImage && (
-      <img src={settings.data.paperBgImage} alt="" class="paper-bg" loading="lazy" aria-hidden="true" />
+      <img id="paper-bg" src={settings.data.paperBgImage} alt="" class="paper-bg" loading="lazy" aria-hidden="true" />
     )}
     <div class="paper-bg-wash" aria-hidden="true"></div>
     <div class="container paper-inner">

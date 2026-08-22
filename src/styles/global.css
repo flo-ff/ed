@@ -170,14 +170,16 @@ header .nav {
 }
 .paper-bg {
   position: absolute;
-  inset: 0;
+  left: 0; right: 0;
+  top: -12%;
+  height: 124%;
   width: 100%;
-  height: 100%;
   object-fit: cover;
   object-position: center;
   opacity: 0.34;
   filter: grayscale(1) contrast(1.08);
   pointer-events: none;
+  will-change: transform;
 }
 .paper-bg-wash {
   position: absolute;
