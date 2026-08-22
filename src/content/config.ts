@@ -54,4 +54,12 @@ const infocard = defineCollection({
   }),
 });
 
-export const collections = { pages, galleries, settings, infocard };
+const hero = defineCollection({
+  type: 'content',
+  schema: z.object({
+    image: z.string(),
+    alt: z.string().optional(),
+  }),
+});
+
+export const collections = { pages, galleries, settings, infocard, hero };

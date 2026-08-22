@@ -9,7 +9,11 @@ const cardContent = cardEntry ? await cardEntry.render() : null;
 const galleries = (await getCollection('galleries')).filter(g => !g.data.draft).sort((a,b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
 const { Content } = await home.render();
 
-const heroImage = settings.data.heroImage || '/uploads/hero-placeholder.jpg';
+const heroEntries = await getCollection('hero');
+const heroImages = heroEntries.map(e => e.data.image).filter(Boolean);
+const fallbackHero = settings.data.heroImage || '/uploads/hero-placeholder.jpg';
+const allHeros = heroImages.length ? heroImages : [fallbackHero];
+const initialHero = allHeros[0] || fallbackHero;
 const heroTitle = settings.data.heroTitle ?? home.data.title ?? 'SKATE IMAGES';
 const heroWords = heroTitle.split(' ');
 const firstLine = heroWords.slice(0, Math.ceil(heroWords.length/2)).join(' ');
@@ -18,9 +22,10 @@ const secondLine = heroWords.slice(Math.ceil(heroWords.length/2)).join(' ');
 
 <Layout title={settings.data.siteTitle} description={settings.data.siteDescription}>
 
-  <!-- BIG B&W HERO -->
-  <section class="hero-bw">
-    <img src={heroImage} alt="Hero background — black and white" class="hero-bw-img" loading="eager" />
+  <!-- BIG B&W HERO — random from Hero collection, crossfade without black -->
+  <section class="hero-bw" data-heros={JSON.stringify(allHeros)}>
+    <img id="hero-a" src={initialHero} alt="Hero background — black and white" class="hero-bw-img" loading="eager" style="opacity:1" />
+    <img id="hero-b" src={initialHero} alt="" class="hero-bw-img" loading="eager" style="opacity:0" aria-hidden="true" />
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="hero-grain" aria-hidden="true"></div>
 
@@ -57,6 +62,41 @@ const secondLine = heroWords.slice(Math.ceil(heroWords.length/2)).join(' ');
       <span style="width:1px; height:28px; background: linear-gradient(white, transparent); display:block"></span>
     </div>
   </section>
+  <script is:inline>
+    (() => {
+      const section = document.querySelector('.hero-bw');
+      const a = document.getElementById('hero-a');
+      const b = document.getElementById('hero-b');
+      if (!section || !a || !b) return;
+      try {
+        const heros = JSON.parse(section.dataset.heros || '[]');
+        if (heros.length <= 1) return;
+        const pickOne = (exclude) => {
+          if (heros.length === 1) return heros[0];
+          let p; do { p = heros[Math.floor(Math.random()*heros.length)]; } while (p === exclude);
+          return p;
+        };
+        let active = a, inactive = b;
+        let cur = active.getAttribute('src');
+        inactive.src = cur;
+        const crossfadeTo = (next) => {
+          if (!next || next === cur) return;
+          const tmp = new Image(); tmp.src = next;
+          const doFade = () => {
+            inactive.src = next;
+            void inactive.offsetWidth;
+            inactive.style.opacity = '1';
+            active.style.opacity = '0';
+            setTimeout(() => { const t = active; active = inactive; inactive = t; cur = next; inactive.style.opacity = '0'; }, 950);
+          };
+          if (tmp.complete) doFade(); else tmp.onload = doFade;
+        };
+        setTimeout(() => { const first = pickOne(cur); if (first !== cur) crossfadeTo(first); }, 800);
+        setInterval(() => { const next = pickOne(cur); crossfadeTo(next); }, 15000);
+      } catch(e) {}
+    })();
+  </script>
+
 
   <div class="torn" aria-hidden="true"></div>
 

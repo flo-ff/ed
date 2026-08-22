@@ -136,6 +136,8 @@ header .nav {
   object-position: center 38%;
   filter: grayscale(1) contrast(1.45) brightness(0.78) sepia(0.05);
   transform: scale(1.02);
+  transition: opacity 900ms ease;
+  will-change: opacity;
 }
 .hero-bw::after {
   /* vignette + photocopy */
@@ -162,6 +164,8 @@ header .nav {
   mask-image: radial-gradient(ellipse at center, black 55%, transparent 85%);
   opacity: 0.5;
 }
+
+
 
 .hero-content {
   position: relative; z-index: 3;
@@ -430,6 +434,32 @@ header .nav {
   filter: contrast(1.05) saturate(0.92);
   border-bottom: 2.5px solid var(--ink);
 }
+/* light leak hover — warm film leak */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 420px 220px at 78% 18%, rgba(255,110,40,0.22), transparent 62%),
+    radial-gradient(ellipse 320px 180px at 18% 82%, rgba(255,200,60,0.14), transparent 60%),
+    linear-gradient(112deg, transparent 62%, rgba(255,90,30,0.10) 100%);
+  opacity: 0;
+  transition: opacity 320ms ease;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+.card:hover::after { opacity: 1; }
+.gallery-grid figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 360px 200px at 72% 22%, rgba(255,110,40,0.20), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+.gallery-grid figure:hover::after { opacity: 1; }
 .card-body { padding: 16px 16px 14px; background: white; }
 .card-body h3 {
   font-family: 'Anton', sans-serif;

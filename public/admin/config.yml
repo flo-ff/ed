@@ -70,6 +70,18 @@ collections:
           - { label: "Box 2 Text", name: "box2Text", widget: "text", required: false }
           - { label: "Footer (handwritten)", name: "footer", widget: "string", required: false }
 
+  - name: "hero"
+    label: "Hero (random)"
+    folder: "src/content/hero"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Image (B&W, high contrast)", name: "image", widget: "image", hint: "One of these is picked randomly on each visit" }
+      - { label: "Alt Text", name: "alt", widget: "string", required: false }
+      - { label: "Note (not shown)", name: "body", widget: "markdown", required: false }
+
   - name: "galleries"
     label: "Galleries"
     folder: "src/content/galleries"
